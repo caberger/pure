@@ -8,7 +8,7 @@ Most often they want to use React, Vue or Angular.
 The answer that I usually give is:
 ***As soon as you can explain to me what your Web-Browser can do, you are free to choose your Framework***.
 
-Students that want to use a framework get the OK as soon as they are able to explain to me how the [pure](./pure/readme.md) project works.
+Students that want to use a framework get the OK as soon as they are able to explain to me how the [pure](./code/readme.md) project works.
 
 The pure project is browser native without any framework. 
 
