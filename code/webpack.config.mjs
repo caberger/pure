@@ -58,7 +58,8 @@ const config = {
         extensions: [".ts", ".js", ".html"],
         alias: {
             lib: resolve("./src/lib"),
-            features: resolve("./src/features")
+            features: resolve("./src/features"),
+            components: resolve("./src/components")
         }
     }
 }

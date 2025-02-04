@@ -3,7 +3,7 @@ import { subscribe, set } from "features/model"
 
 import toDoTableWithHeader from "./table-template.html"
 
-import { ToDo } from "./todo"
+import { ToDo } from "../../features/todo/todo"
 import { html, render } from "lib/pure-html"
 import { seconds, timer } from "lib/timer"
 
@@ -32,6 +32,7 @@ class ToDoTable extends HTMLElement {
         if (youHaveConfirmedToStartATimer) {
             this.clock.start()
         }
+        this.dispatchEvent(new CustomEvent("todo-tick", {detail: toDo})) // please explain: why do we not reveive this ?
     }
 }
 customElements.define("todo-table", ToDoTable)
@@ -50,6 +51,6 @@ function changeTheCompletedValueOfARandomToDo() {
         const todos = model.todos
         const randomIndex = (Math.floor(todos.length * Math.random()) % 10) % todos.length
         const randomToDo = todos[randomIndex]       
-        model.todos = produce(todos, todos => todos[randomIndex] = {...todos[randomIndex], completed: !randomToDo.completed})   
+        model.todos = produce(todos, todos => todos[randomIndex] = {...todos[randomIndex], completed: !randomToDo.completed})
     })
 }
