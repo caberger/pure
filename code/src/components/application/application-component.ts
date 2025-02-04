@@ -5,13 +5,15 @@ import { ToDo, fetchAllToDos } from "features/todo"
 class ApplicationElement extends HTMLElement {
     connectedCallback() {
         document.title = "ToDos - Demo"
-        this.addEventListener("todo-tick", (e: CustomEvent<ToDo>) => this.tick(e))
         render(this.template(), this)
+        this
+            .querySelector("todo-table")
+            .addEventListener("todo-tick", (e: CustomEvent<ToDo>) => this.tick(e))
         fetchAllToDos()        
     }
     tick(event: CustomEvent<ToDo>): void {
         const todo = event.detail
-        console.log("todo chaned", todo)
+        console.log("todo changed", todo)
     }
     template() {
         return html`<todo-table></todo-table>`
