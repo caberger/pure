@@ -3,7 +3,7 @@ import { subscribe, set } from "features/model"
 
 import toDoTableWithHeader from "./table-template.html"
 
-import { ToDo } from "../../features/todo/todo"
+import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
 import { seconds, timer } from "lib/timer"
 
@@ -28,11 +28,11 @@ class ToDoTable extends HTMLElement {
     }
     aTableRowHasBeenClickedFor(toDo: ToDo) {
         this.clock.stop()
+        this.dispatchEvent(new CustomEvent("todo-selected", {detail: toDo})) // please explain: why do we not reveive this ?
         const youHaveConfirmedToStartATimer = confirm(`toDo #${toDo.id}: "${toDo.title}" ... do you want to start a timer?`)
         if (youHaveConfirmedToStartATimer) {
             this.clock.start()
         }
-        this.dispatchEvent(new CustomEvent("todo-tick", {detail: toDo})) // please explain: why do we not reveive this ?
     }
 }
 customElements.define("todo-table", ToDoTable)

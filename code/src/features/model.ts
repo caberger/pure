@@ -1,4 +1,4 @@
-import { ToDo } from "./todo/todo"
+import { ToDo } from "./todo"
 import { Observable } from "lib/observable"
 
 interface Model {
