@@ -3,9 +3,11 @@ import { Observable } from "lib/observable"
 
 interface Model {
     todos: ToDo[]
+    currentPane: string
 }
 const state: Model = {
-    todos: []
+    todos: [],
+    currentPane: "/todos"
 }
 const store = new Observable(state)
 

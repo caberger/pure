@@ -17,18 +17,24 @@ class ToDoTable extends HTMLElement {
     connectedCallback() {
         subscribe(model => this.renderATableOf(model.todos))
     }
+    disconnectedCallback() {
+        this.clock.stop()
+    }
     renderATableOf(todos: ToDo[]) {
-        render(toDoTableWithHeader("ToDos"), this.shadowRoot)
+        render(toDoTableWithHeader(""), this.shadowRoot)
         const bodyOfTable = this.shadowRoot.querySelector("tbody")
         todos.forEach(todo => {
             const insertedTableRowElement = bodyOfTable.insertRow()
-            render(todoRowContentsOf(todo), insertedTableRowElement)
             insertedTableRowElement.onclick = () => this.aTableRowHasBeenClickedFor(todo)
+            render(todoRowContentsOf(todo), insertedTableRowElement)
         })
+        const table = this.shadowRoot.querySelector("table")
+        setTimeout(() => table.classList.add("fadein"), 10)
     }
     aTableRowHasBeenClickedFor(toDo: ToDo) {
         this.clock.stop()
         this.dispatchEvent(new CustomEvent("todo-selected", {detail: toDo})) // please explain: why do we not reveive this ?
+        
         const youHaveConfirmedToStartATimer = confirm(`toDo #${toDo.id}: "${toDo.title}" ... do you want to start a timer?`)
         if (youHaveConfirmedToStartATimer) {
             this.clock.start()

@@ -9,7 +9,7 @@ With [Can I use](https://caniuse.com/) you will see that your target platform su
 
 ## what you get
 
-... is a simple table of todos loaded from [json-placeholder](https://jsonplaceholder.typicode.com/todos), formatted with pure.css styles that do not bleed out of their shadow root and a click handler that starts to randomly change the completed state of certain todos.
+... is a simple table of todos loaded from [json-placeholder](https://jsonplaceholder.typicode.com/todos), formatted with pure.css styles that do not bleed out of their shadow root.
 
 ## what you learn
 

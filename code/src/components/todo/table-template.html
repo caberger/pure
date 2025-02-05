@@ -1,17 +1,30 @@
 <link rel="stylesheet" href="./styles/pure-min.css" />
 <style>
     div {
-        width: 100%
+        width: 100%;
     }
     table {
         max-width: fit-content;
         margin-left: auto;
         margin-right: auto;
     }
+    tbody tr {
+        cursor: pointer;
+    }
+    table {
+        opacity: 0;
+        border-radius: 25px;
+    }
+    table.fadein {
+        opacity: 1;
+        transition: opacity 1.5s;
+        transition-timing-function: ease-in;
+        /*: cubic-bezier(.29, 1.01, 1, -0.68);*/
+    }
 </style>
-<div>
+<div id="slidein">
     <table class="pure-table pure-table-striped">
-        <caption>${model}</caption>
+        <caption>ToDos</caption>
         <thead>
             <tr>
                 <th class="right">Id</th>
