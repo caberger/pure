@@ -14,7 +14,7 @@ The pure project is browser native without any framework.
 
 My experience shows that it takes them a lot of attempts to succeed. 
 
-At the end, when they are able to understand Typescript and the great features that their browser offers them, they finally do not use any framework at all because they found out that the Browser is a platform that gives them all they need to write great apps that can be supported for decades.
+At the end, when they are able to understand Typescript and the great features that their browser offers them, they most often do not use any framework at all because they found out that the Browser is a platform that gives them all they need to write great apps that can be supported for decades.
 
 ## Details
 
