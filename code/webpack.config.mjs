@@ -28,7 +28,8 @@ const config = {
         new CleanWebpackPlugin({ verbose: false }),
         new CopyWebpackPlugin({
             patterns: [
-              { from: "styles", to: "styles" }
+              { from: "styles", to: "styles" },
+              { from: "node_modules/purecss/build/pure-min.css", to: "styles"}
             ]
         })        
     ],

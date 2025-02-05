@@ -1,41 +1,25 @@
+<link rel="stylesheet" href="./styles/pure-min.css" />
 <style>
-table {
-    font-family: Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-td, th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-tr:hover {
-    background-color: #ddd;
-    cursor: pointer;
-}
-th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #04AA6D;
-    color: white;
-}
-.right {
-    text-align: right;
-}
+    div {
+        width: 100%
+    }
+    table {
+        max-width: fit-content;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
-
-<table>
-    <caption>${model}</caption>
-    <thead>
-        <tr>
-            <th class="right">Id</th>
-            <th>Title</th>
-            <th>Completed</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+<div>
+    <table class="pure-table pure-table-striped">
+        <caption>${model}</caption>
+        <thead>
+            <tr>
+                <th class="right">Id</th>
+                <th>Title</th>
+                <th>Completed</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
