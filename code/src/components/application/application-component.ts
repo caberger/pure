@@ -18,20 +18,35 @@ class ApplicationElement extends HTMLElement {
         document.title = "ToDos - Demo"
         await waitForElements()
         subscribe(model => this.render(model.currentPane))
-        this
-            .querySelector("todo-table")
-            .addEventListener("todo-selected", (e: CustomEvent<ToDo>) => this.tick(e))
+
         fetchAllToDos()        
     }
     render(pane: string) {
-        const todoHidden = pane != "/todos" ? "hidden" : ""
-        const userTableHidden = pane != "/users" ? "hidden" : ""
         const template = html`
             <application-menu></application-menu>
-            <todo-table ${todoHidden}></todo-table>
-            <user-table ${userTableHidden}></user-table>
+            <todo-table hidden data-pane="/todos"></todo-table>
+            <user-table hidden data-pane="/users"></user-table>
         `
-        render(template, this)
+        if (!this.firstChild) {
+            render(template, this)
+            this
+                .querySelector("todo-table")
+                .addEventListener("todo-selected", (e: CustomEvent<ToDo>) => this.tick(e))
+        } else {
+            this.update(pane)
+        }
+    }
+    update(pane: string) {
+        const panes = ["todo-table", "user-table"]
+        panes.forEach(el => {
+            const element = this.querySelector(el) as HTMLElement
+            const elementPane = element.dataset.pane
+            if (elementPane == pane) {
+                element.removeAttribute("hidden")
+            } else {
+                element.setAttribute("hidden", "")
+            }
+        })
     }
     tick(event: CustomEvent<ToDo>): void {
         const todo = event.detail
