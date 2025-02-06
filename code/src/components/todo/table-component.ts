@@ -16,7 +16,7 @@ class ToDoTable extends HTMLElement {
         super()
         this.attachShadow({ mode: "open" })
     }
-    attributeChangedCallback(name: string, _: string, value: string) {
+    attributeChangedCallback(name: string) {
         name == "hidden" ? 
             addOrRemoveElementClass("fadein", this.shadowRoot.querySelector("div"), this.getAttribute("hidden") === null) :
             console.error("unknown attr", name)
