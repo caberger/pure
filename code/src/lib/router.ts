@@ -12,11 +12,11 @@ function setup() {
         const state = event.state as NavigationState
         set(model => model.currentPane = state.pane)
     })
-    const state = stateFromLocation(document.location.href)
+    const state = createNavigationStateWith(document.location.href)
     history.replaceState(state, "", document.location.href)
 }
 
-function stateFromLocation(location: string) {
+function createNavigationStateWith(location: string) {
     const url = new URL(location)
     const pane = url.pathname
     const state: NavigationState = {
@@ -31,7 +31,7 @@ function addLinks(element: HTMLElement | ShadowRoot) {
     links.forEach(a => {
         a.onclick = (e: MouseEvent) => {
             e.preventDefault()
-            const state = stateFromLocation(a.href)
+            const state = createNavigationStateWith(a.href)
             history.pushState(state, "", a.href)
             set(model => model.currentPane = state.pane)
         }

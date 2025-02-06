@@ -11,21 +11,19 @@
     tbody tr {
         cursor: pointer;
     }
-    table {
-        opacity: 0;
-        border-radius: 25px;
-    }
-    table.fadein {
-        opacity: 1;
-        transition: opacity 1.5s;
-        transition-timing-function: ease-in;
-        /*: cubic-bezier(.29, 1.01, 1, -0.68);*/
-    }
     .right {
         text-align: right;
     }
+    div {
+        opacity: 0;
+    }
+    div.fadein {
+        opacity: 1;
+        transition: opacity 1.5s;
+        transition-timing-function: ease-in;
+    }    
 </style>
-<div id="slidein">
+<div>
     <table class="pure-table pure-table-striped">
         <caption>ToDos</caption>
         <thead>

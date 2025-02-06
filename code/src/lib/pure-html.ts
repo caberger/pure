@@ -1,3 +1,5 @@
+import { clear } from "./util"
+
 /** small replacement for lit-html
  * @see https://github.com/lit/lit/tree/main/packages/lit-html
  * (c) Christian Aberger (2025)
@@ -11,9 +13,7 @@ const html = (strings: TemplateStringsArray, ...values: any[]) => {
 }
 
 function render(template: HTMLTemplateElement, at: HTMLElement | ShadowRoot) {
-    while(at.firstChild) {
-        at.firstChild.remove()
-    }
+    clear(at)
     const content = template.content.cloneNode(true)
     at.appendChild(content)
 }
