@@ -18,6 +18,6 @@
       "components/*": ["src/components/*"]
     }
   },
-  "include": ["./src", "./@types"],
+  "include": ["./src", "./@types", "data/create-test-data.mjs"],
   "files": ["src/index.ts"]
 }

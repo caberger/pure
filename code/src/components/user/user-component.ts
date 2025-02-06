@@ -1,9 +1,9 @@
-import { html, render } from "lib/pure-html"
-import template from "./user-component-template.html"
+import { render } from "lib/pure-html"
+import user from "./user-component-template.html"
 
 class UserElement extends HTMLElement {
     connectedCallback() {
-        render(template(""), this)
+        render(user(), this)
     }
 }
 

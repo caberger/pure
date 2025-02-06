@@ -15,5 +15,4 @@ function template<T>(content: T) {
     const exportString = "module.exports = " + code
     return exportString
 }
-
 export default template

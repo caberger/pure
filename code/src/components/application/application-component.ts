@@ -4,7 +4,7 @@ import "components/todo"
 import "components/menu"
 import "components/user/user-component"
 import { subscribe } from "features/model"
-import template from "./application-component-template.html"
+import application from "./application-component-template.html"
 
 async function waitForElements() {
     [
@@ -24,7 +24,7 @@ class ApplicationElement extends HTMLElement {
         fetchAllToDos()        
     }
     render() {
-        render(template(""), this)
+        render(application(), this)
 
         this
             .querySelector("todo-table")

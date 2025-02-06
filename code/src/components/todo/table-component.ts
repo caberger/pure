@@ -16,11 +16,13 @@ class ToDoTable extends HTMLElement {
         super()
         this.attachShadow({ mode: "open" })
     }
-    attributeChangedCallback(name: string, old: string, value: string) {
-        addOrRemoveElementClass("fadein", this.shadowRoot.querySelector("div"), this.getAttribute("hidden") === null)
+    attributeChangedCallback(name: string, _: string, value: string) {
+        name == "hidden" ? 
+            addOrRemoveElementClass("fadein", this.shadowRoot.querySelector("div"), this.getAttribute("hidden") === null) :
+            console.error("unknown attr", name)
     }
     connectedCallback() {
-        render(toDoTableWithHeader(""), this.shadowRoot)
+        render(toDoTableWithHeader(), this.shadowRoot)
         subscribe(model => this.renderATableOf(model.todos))
     }
     disconnectedCallback() {

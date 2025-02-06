@@ -11,7 +11,7 @@ class MenuElement extends HTMLElement {
         this.render()        
     }
     render() {
-        render(menu(""), this.shadowRoot)
+        render(menu(), this.shadowRoot)
         addLinks(this.shadowRoot)
     }
 }

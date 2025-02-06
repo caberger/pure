@@ -5,6 +5,6 @@
  */
 
 declare module "*-template.html" {
-    const value: (content: any) => HTMLTemplateElement
+    const value: (content?: any) => HTMLTemplateElement
     export default value
 }
