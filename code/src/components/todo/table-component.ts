@@ -6,7 +6,7 @@ import toDoTableWithHeader from "./table-template.html"
 import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
 import { seconds, timer } from "lib/timer"
-import { addOrRemoveElementClass, clear } from "lib/util"
+import { addOrRemoveElementClass, clear, truncate } from "lib/util"
 
 class ToDoTable extends HTMLElement {
     static observedAttributes = ["hidden"]
@@ -34,7 +34,8 @@ class ToDoTable extends HTMLElement {
         todos.forEach(todo => {
             const insertedTableRowElement = bodyOfTable.insertRow()
             insertedTableRowElement.onclick = () => this.aTableRowHasBeenClickedFor(todo)
-            render(todoRowContentsOf(todo), insertedTableRowElement)
+            const ellipsisedTodo = produce(todo as any, todo => todo.title = truncate(todo.title, 80)) as ToDo
+            render(todoRowContentsOf(ellipsisedTodo), insertedTableRowElement)
         })
         const table = this.shadowRoot.querySelector("table")
     }

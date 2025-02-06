@@ -15,5 +15,7 @@ function addOrRemoveElementClass(forClass: string, element: HTMLElement, add: bo
     }
     setTimeout(addRemove, 0)
 }
-
-export { clear, addOrRemoveElementClass }
+function truncate(text: string, numberOfCharacters: number){
+    return text.length > numberOfCharacters ? text.slice(0, numberOfCharacters-1) + '&hellip;' : text
+}
+export { clear, addOrRemoveElementClass, truncate }

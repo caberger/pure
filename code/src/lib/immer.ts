@@ -6,7 +6,7 @@
  */
 
 function produce<T>(baseState: T, recipe: (draft: T) => void) {
-    const clone: T = JSON.parse(JSON.stringify(baseState))
+    const clone = structuredClone(baseState)
     recipe(clone)
     return clone
 }

@@ -8,7 +8,7 @@
     "prestart": "npm run build:loaders",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
-    "build:loaders": "npx tsc --declaration ./src/lib/loaders/template-loader.ts",
+    "build:loaders": "npx tsc --declaration ./src/lib/loaders/template-loader.ts && node ./data/create-test-data.mjs",
     "watch": "webpack --watch",
     "start": "webpack serve"
   },
@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "description": "Pure Web Application without any dependencies",
+  
   "devDependencies": {
     "@types/jabber": "^1.2.4",
     "@webpack-cli/generators": "^3.0.7",
