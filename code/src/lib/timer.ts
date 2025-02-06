@@ -8,8 +8,8 @@ function timer(callback: () => void, ms: number, repeat: boolean = false) {
     let timer: NodeJS.Timeout
 
     function start() {
-        const fn = repeat ? setInterval : setTimeout
-        timer = fn(callback, ms)
+        const tick = repeat ? setInterval : setTimeout
+        timer = tick(callback, ms)
     }
     function stop() {
         if (timer) {
