@@ -4,11 +4,12 @@
  * https://www.aberger.at
  */
 
-function timer(callback: () => void, ms: number) {
+function timer(callback: () => void, ms: number, repeat: boolean = false) {
     let timer: NodeJS.Timeout
 
     function start() {
-        timer = setInterval(callback, ms)
+        const fn = repeat ? setInterval : setTimeout
+        timer = fn(callback, ms)
     }
     function stop() {
         if (timer) {

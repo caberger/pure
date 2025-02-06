@@ -5,12 +5,12 @@ import toDoTableWithHeader from "./table-template.html"
 
 import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
-import { milliSeconds, seconds, timer } from "lib/timer"
+import { seconds, timer } from "lib/timer"
 import { addOrRemoveElementClass, clear } from "lib/util"
 
 class ToDoTable extends HTMLElement {
     static observedAttributes = ["hidden"]
-    clock = timer(changeTheCompletedValueOfARandomToDo, seconds(1))
+    clock = timer(changeTheCompletedValueOfARandomToDo, seconds(1), true)
 
     constructor() {
         super()
