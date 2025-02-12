@@ -17,13 +17,39 @@ function timer(callback: () => void, ms: number, repeat: boolean = false) {
         }
         timer = undefined
     }
-    return { start, stop }
+    function active() {
+        return !!timer
+    }
+    function milliSeconds(ms: number) {
+        return ms
+    }
+    const seconds = (seconds: number) => 1000 * seconds
+    return { start, stop, active }
 }
 function milliSeconds(ms: number) {
     return ms
 }
-function seconds(seconds: number) {
-    return 1000 * milliSeconds(seconds)
-}
+timer.milliseconds = milliSeconds
+timer.seconds = (seconds: number) => 1000 * milliSeconds(seconds)
 
-export { timer, seconds, milliSeconds }
+type Callback = (...args: any[]) => void
+
+const debounce = (callback: Callback, wait: number) => {
+    let timeoutId: number
+    return (...args: any[]) => {
+        window.clearTimeout(timeoutId)
+        timeoutId = window.setTimeout(() => callback(...args), wait)
+    }
+}
+function throttle(callback: Callback, delay = 1000) {
+    let shouldWait = false
+
+    return (...args: any[]) => {
+        if (!shouldWait) {
+            callback(...args)
+            shouldWait = true
+            setTimeout(() => shouldWait = false, delay)
+        }
+    }
+}
+export { timer, debounce, throttle }

@@ -1,5 +1,5 @@
-function clear(element: HTMLElement | ShadowRoot) {
-    while(element.firstChild) {
+function clear(element: HTMLElement | ShadowRoot | undefined) {
+    while(element?.firstChild) {
         element.firstChild.remove()
     }
 }

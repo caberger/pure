@@ -4,10 +4,12 @@ import { Observable } from "lib/observable"
 interface Model {
     todos: ToDo[]
     currentPane: string
+    timerIsActive: boolean
 }
 const state: Model = {
     todos: [],
-    currentPane: "/todos"
+    currentPane: "/todos",
+    timerIsActive: false
 }
 const store = new Observable(state)
 

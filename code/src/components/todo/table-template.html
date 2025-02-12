@@ -12,10 +12,10 @@
     tbody tr {
         cursor: pointer;
     }
-    div {
+    #table {
         opacity: 0;
     }
-    div.fadein {
+    #table.fadein {
         opacity: 1;
         transition: opacity 1.5s;
         transition-timing-function: ease-in;
@@ -24,7 +24,8 @@
         text-align: right;
     }
 </style>
-<div>
+<div id="table">
+    <start-stop></start-stop>
     <table class="pure-table pure-table-striped">
         <caption>ToDos</caption>
         <thead>

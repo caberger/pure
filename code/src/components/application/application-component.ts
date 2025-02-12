@@ -28,7 +28,7 @@ class ApplicationElement extends HTMLElement {
 
         this
             .querySelector("todo-table")
-            .addEventListener("todo-selected", (e: CustomEvent<ToDo>) => this.tick(e))
+            .addEventListener("todo-selected", (e: CustomEvent<number>) => this.toDoSelected(e))
     }
     show(pane: string) {
         const panes = ["todo-table", "user-table"]
@@ -41,9 +41,9 @@ class ApplicationElement extends HTMLElement {
             }
         })
     }
-    tick(event: CustomEvent<ToDo>): void {
-        const todo = event.detail
-        console.log("todo selected", todo)
+    toDoSelected(event: CustomEvent<number>): void {
+        const id = event.detail
+        alert(`todo ${id} has been selected`)
     }
 }
 customElements.define("application-component", ApplicationElement)

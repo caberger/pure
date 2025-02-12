@@ -32,3 +32,9 @@ export class Observable<T extends object> implements ProxyHandler<T> {
         return this.proxy
     }
 }
+
+
+type Comparator<T> = (prev: T, cur: T) => boolean
+function distinctUntilChanged<T>(comp: Comparator<T>) {
+    return false
+}

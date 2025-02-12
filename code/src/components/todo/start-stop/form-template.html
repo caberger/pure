@@ -1,0 +1,26 @@
+<style>
+    fieldset {
+        display: flex
+    }
+    span {
+        flex-grow: 1;
+    }
+    button {
+        margin: 0.5rem;        
+    }
+</style>
+<div>
+    <div class="pure-form">
+        <fieldset>
+            <legend>Start / Stop a timer to change the "completed" state of a random todo (10 times a second)</legend>
+            <span></span>
+            <button id="start" class="pure-button pure-button-primary" ${model.startButtonDisabled}>
+                Start
+            </button>
+            <button id="stop" class="pure-button pure-button-primary" ${model.stopButtonDisabled}>
+                Stop
+            </button>
+            <span></span>
+        </fieldset>
+    </div>
+</div>

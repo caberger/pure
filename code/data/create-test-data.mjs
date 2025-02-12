@@ -2,6 +2,7 @@ import JabberPkg from "jabber"
 const Jabber = JabberPkg.default
 import { writeFileSync } from "node:fs"
 
+const NUMBER_OF_ENTRIES = 50
 const OUTPUT_FILE_NAME = "./data/todos.json"
 
 const themeWords = [
@@ -31,10 +32,15 @@ const themeWords = [
     "folder",
     "stylesheet",
     "link",
+    "this",
     "href",
     "css",
+    "get",
+    "set",
     "connectedCallback",
+    "disconnectedCallback",
     "constructor",
+    "super",
     "attributeChanged",
     "extends",
     "implements",
@@ -51,7 +57,7 @@ const themeWords = [
     "interface",
     "forEach",
     "Reflect",
-    "generic",
+    "Generic",
     "function",
     "while",
     "return",
@@ -62,13 +68,18 @@ const themeWords = [
     "catch",
     "encodeURI",
     "encodeURIComponent",
-    "Uint8Array"
+    "Uint8Array",
+    "Array",
+    "static",
+    "string",
+    "number",
+    "boolean"
 ]
 const jabber = new Jabber(themeWords, 3, "öäü", "ß")
 
 const todos = []
 let userId = 0
-for (let id = 1; id <= 200; id++) {
+for (let id = 1; id <= NUMBER_OF_ENTRIES; id++) {
     if (0 == id % 10) {
         userId++
     }
