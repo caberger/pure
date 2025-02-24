@@ -1,5 +1,4 @@
-import { produce } from "lib/immer"
-import { subscribe, set, Model } from "features/model"
+import { subscribe } from "features/model"
 
 import toDoTableWithHeader from "./table-template.html"
 
@@ -66,15 +65,3 @@ const todoRowTemplate = html`
     <td></td>
     <td></td>
 `
-/** play around with changes
- * Using a timer we choose a random todo near the top of the view and change the "completed" state.
- * Let's see what happens :)
- */
-function changeTheCompletedValueOfARandomToDo() {
-    set(model => {
-        const todos = model.todos
-        const randomIndex = (Math.floor(todos.length * Math.random()) % 10) % todos.length
-        const randomToDo = todos[randomIndex]
-        model.todos = produce(todos, todos => todos[randomIndex] = { ...todos[randomIndex], completed: !randomToDo.completed })
-    })
-}

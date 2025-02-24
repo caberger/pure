@@ -3,7 +3,7 @@ import { timer } from "lib/timer"
 import { set, subscribe } from "features/model"
 import { produce } from "lib/immer"
 
-import form from "./form-template.html"
+import template from "./form-template.html"
 
 class StartStopComponent extends HTMLElement {
     clock = timer(changeTheCompletedValueOfARandomToDo, timer.milliseconds(100), true)
@@ -27,14 +27,25 @@ class StartStopComponent extends HTMLElement {
         console.log("render start stop")
         const startButtonDisabled = timerIsActive ? "disabled" : ""
         const stopButtonDisabled = timerIsActive ? "" : "disabled"
-        render(form({startButtonDisabled, stopButtonDisabled}), this)
+        render(template({startButtonDisabled, stopButtonDisabled}), this)
         const startButton = this.querySelector("button[id='start']") as HTMLButtonElement
+        startButton.onclick = () => dialog.showModal()
         const stopButton = this.querySelector("button[id='stop']") as HTMLButtonElement
 
-        startButton.onclick = () => set(model => model.timerIsActive = true)
+        const dialog = this.querySelector("dialog")
         stopButton.onclick = () => {
             console.log("stop clicked")
             set(model => model.timerIsActive = false)
+        }
+        const form = dialog.querySelector("form")
+        form.onformdata = (event: FormDataEvent) => {
+            console.log("dialog submitted", event)
+            const data = event.formData
+            if (event.formData.getAll("start")) {
+                set(model => model.timerIsActive = true)
+            } else {
+                console.log("not started")
+            }
         }
     }
     disconnectedCallback() {

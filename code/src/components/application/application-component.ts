@@ -1,5 +1,5 @@
 import { render } from "lib/pure-html"
-import { ToDo, fetchAllToDos } from "features/todo"
+import { fetchAllToDos } from "features/todo"
 import "components/todo"
 import "components/menu"
 import "components/user/user-component"
