@@ -30,6 +30,7 @@ const config = {
         new CopyWebpackPlugin({
             patterns: [
               { from: "styles", to: "styles" },
+              { from: "images", to: "images" },
               { from: "node_modules/purecss/build/pure-min.css", to: "styles"},
               { from: "data", to: "data"}
             ]

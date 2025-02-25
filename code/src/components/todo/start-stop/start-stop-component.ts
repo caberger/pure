@@ -24,7 +24,6 @@ class StartStopComponent extends HTMLElement {
         })
     }
     render(timerIsActive: boolean) {
-        console.log("render start stop")
         const startButtonDisabled = timerIsActive ? "disabled" : ""
         const stopButtonDisabled = timerIsActive ? "" : "disabled"
         render(template({startButtonDisabled, stopButtonDisabled}), this)
@@ -34,17 +33,14 @@ class StartStopComponent extends HTMLElement {
 
         const dialog = this.querySelector("dialog")
         stopButton.onclick = () => {
-            console.log("stop clicked")
             set(model => model.timerIsActive = false)
         }
         const form = dialog.querySelector("form")
         form.onformdata = (event: FormDataEvent) => {
-            console.log("dialog submitted", event)
             const data = event.formData
-            if (event.formData.getAll("start")) {
+            const starts = event.formData.getAll("start")
+            if (starts.length > 0) {
                 set(model => model.timerIsActive = true)
-            } else {
-                console.log("not started")
             }
         }
     }

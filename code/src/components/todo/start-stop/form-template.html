@@ -20,23 +20,23 @@
             <button id="start" class="pure-button pure-button-primary" ${model.startButtonDisabled}>
                 Start...
             </button>
-            <button id="stop" class="pure-button pure-button-primary" ${model.stopButtonDisabled}>
+            <button id="stop" class="pure-button pure-button" ${model.stopButtonDisabled}>
                 Stop
             </button>
             <span></span>
         </fieldset>
     </div>
-    <dialog id="dialog" aria-labelledby="title">
-        <h2 id="title">Are you sure?</h2>
+    <dialog aria-labelledby="msg-title">
+        <h2 id="msg-title">Are you sure?</h2>
         <p>
             A timer will be started that changes the completion state of random elements
         </p>
-        <form method="dialog">
+        <form method="dialog" class="pure-form">
             <footer>
-                <button type="submit" name="start">
+                <button type="submit" name="start" class="pure-button pure-button-primary">
                     Yes
                 </button>
-                <button type="submit" name="cancel">
+                <button type="submit" name="cancel" class="pure-button pure-button">
                     Cancel
                 </button>
             </footer>
