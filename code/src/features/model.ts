@@ -13,7 +13,7 @@ const state: Model = {
 }
 const store = new Observable(state)
 
-function set(recipe: (model: Model) => void) {
+function set(recipe: (model: Model) => void) {
     recipe(store.value)
 }
 function subscribe(observer: (model: Model) => void) {
