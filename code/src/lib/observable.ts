@@ -1,4 +1,6 @@
-/** small replacement for RxJs
+/** small replacement for RxJs.
+ * Do not use in production.
+ * For educational purposes only.
  * @see https://reactivex.io/
  * @author Christian Aberger
  * (c) Christian Aberger (2025)
