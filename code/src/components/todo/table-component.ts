@@ -1,4 +1,4 @@
-import { subscribe } from "features/model"
+import { store, Model } from "features/model"
 
 import toDoTableWithHeader from "./table-template.html"
 
@@ -6,6 +6,7 @@ import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
 import { addOrRemoveElementClass, truncate } from "lib/util"
 import "./start-stop/start-stop-component"
+import { distinctUntilChanged, filter, peek } from "lib/observable"
 
 class ToDoTable extends HTMLElement {
     static observedAttributes = ["hidden"]
@@ -20,9 +21,12 @@ class ToDoTable extends HTMLElement {
     }
     connectedCallback() {
         this.renderTable()
-        subscribe(model => {
-            this.renderBodyOfTableFor(model.todos)
-        })
+        store
+            .pipe(
+                peek(model => console.log("model", model)),
+                distinctUntilChanged((prev: Model, cur: Model) => prev.todos == cur.todos)
+            )
+            .subscribe(model => this.renderBodyOfTableFor(model.todos))
     }
     get table() {
         return this.shadowRoot.querySelector("table")

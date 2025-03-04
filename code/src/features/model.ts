@@ -1,5 +1,5 @@
 import { ToDo } from "./todo"
-import { Observable } from "lib/observable"
+import { Subject } from "lib/observable"
 
 interface Model {
     todos: ToDo[]
@@ -11,12 +11,9 @@ const state: Model = {
     currentPane: "/todos",
     timerIsActive: false
 }
-const store = new Observable(state)
+const store = new Subject(state)
 
 function set(recipe: (model: Model) => void) {
     recipe(store.value)
 }
-function subscribe(observer: (model: Model) => void) {
-    store.subscribe(observer)
-}
-export { Model, subscribe, set }
+export { Model, store, set }

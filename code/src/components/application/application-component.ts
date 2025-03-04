@@ -3,8 +3,9 @@ import { fetchAllToDos } from "features/todo"
 import "components/todo"
 import "components/menu"
 import "components/user/user-component"
-import { subscribe } from "features/model"
+import { store } from "features/model"
 import application from "./application-component-template.html"
+import { distinctUntilChanged, peek } from "lib/observable"
 
 async function waitForElements() {
     [
@@ -19,7 +20,12 @@ class ApplicationElement extends HTMLElement {
         await waitForElements()
         this.render()
 
-        subscribe(model => this.show(model.currentPane))
+        store
+            //.pipe(distinctUntilChanged((prev, cur) => prev.currentPane == cur.currentPane))
+            .pipe(
+                peek(model => console.log("appcpm", model))
+            )
+            .subscribe(model => this.show(model.currentPane))
 
         fetchAllToDos()        
     }
@@ -47,3 +53,4 @@ class ApplicationElement extends HTMLElement {
     }
 }
 customElements.define("application-component", ApplicationElement)
+

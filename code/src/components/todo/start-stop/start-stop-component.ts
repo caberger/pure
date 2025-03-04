@@ -1,6 +1,6 @@
 import { render } from "lib/pure-html"
 import { timer } from "lib/timer"
-import { set, subscribe } from "features/model"
+import { set, store } from "features/model"
 import { produce } from "lib/immer"
 
 import template from "./form-template.html"
@@ -9,7 +9,7 @@ class StartStopComponent extends HTMLElement {
     clock = timer(changeTheCompletedValueOfARandomToDo, timer.milliseconds(100), true)
     connectedCallback() {
         let previousActive: boolean
-        subscribe(model => {
+        store.subscribe(model => {
             const isActive = model.timerIsActive
             if (previousActive != isActive) {
                 previousActive = isActive
@@ -37,7 +37,6 @@ class StartStopComponent extends HTMLElement {
         }
         const form = dialog.querySelector("form")
         form.onformdata = (event: FormDataEvent) => {
-            const data = event.formData
             const starts = event.formData.getAll("start")
             if (starts.length > 0) {
                 set(model => model.timerIsActive = true)
