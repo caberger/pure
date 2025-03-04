@@ -5,7 +5,7 @@
  * https://www.aberger.at
  */
 
-/** A function that is called by a subject when something
+/** A function that is called by a subject when something changed
  */
 type Callback<T> = (model: T) => void
 
@@ -100,6 +100,7 @@ function distinctUntilChanged<T extends object>(comparator: (prev: T, cur: T) =>
     }
     return op
 }
+/** only forward when filter function returns true */
 function filter<T extends object>(filter: (t: T) => boolean) {
     const op: Operator<T> = {
         process: function (t: T): T {
@@ -109,6 +110,7 @@ function filter<T extends object>(filter: (t: T) => boolean) {
     }
     return op
 }
+/** only launch a side effect, e.g. console.log. */
 function peek<T extends object>(sideEffekt: (t: T) => void) {
     const op: Operator<T> = {
         process: function (t: T): T {
