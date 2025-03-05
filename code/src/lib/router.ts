@@ -7,12 +7,13 @@ interface NavigationState {
 setup()
 
 function setup() {
-    const path = window.location.pathname
     window.addEventListener("popstate", (event: PopStateEvent) => {
         const state = event.state as NavigationState
+        console.log("pop state", state)
         set(model => model.currentPane = state.pane)
     })
     const state = createNavigationStateWith(document.location.href)
+    console.log("replace state", state)
     history.replaceState(state, "", document.location.href)
 }
 
@@ -33,6 +34,7 @@ function addLinks(element: HTMLElement | ShadowRoot) {
             e.preventDefault()
             const state = createNavigationStateWith(a.href)
             history.pushState(state, "", a.href)
+            console.log("push state", state)
             set(model => model.currentPane = state.pane)
         }
     })

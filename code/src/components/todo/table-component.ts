@@ -23,7 +23,6 @@ class ToDoTable extends HTMLElement {
         this.renderTable()
         store
             .pipe(
-                peek(model => console.log("model", model)),
                 distinctUntilChanged((prev: Model, cur: Model) => prev.todos == cur.todos)
             )
             .subscribe(model => this.renderBodyOfTableFor(model.todos))

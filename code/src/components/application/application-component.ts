@@ -21,10 +21,6 @@ class ApplicationElement extends HTMLElement {
         this.render()
 
         store
-            //.pipe(distinctUntilChanged((prev, cur) => prev.currentPane == cur.currentPane))
-            .pipe(
-                peek(model => console.log("appcpm", model))
-            )
             .subscribe(model => this.show(model.currentPane))
 
         fetchAllToDos()        
@@ -37,10 +33,11 @@ class ApplicationElement extends HTMLElement {
             .addEventListener("todo-selected", (e: CustomEvent<number>) => this.toDoSelected(e))
     }
     show(pane: string) {
+        const tab = pane == "/" ? "/todos" : pane
         const panes = ["todo-table", "user-table"]
         panes.forEach(el => {
             const element = this.querySelector(el) as HTMLElement
-            if (element.dataset.pane == pane) {
+            if (element.dataset.pane == tab) {
                 element.removeAttribute("hidden")
             } else {
                 element.setAttribute("hidden", "")

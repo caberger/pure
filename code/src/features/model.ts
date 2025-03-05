@@ -8,7 +8,7 @@ interface Model {
 }
 const state: Model = {
     todos: [],
-    currentPane: "/todos",
+    currentPane: "/",
     timerIsActive: false
 }
 const store = new Subject(state)
