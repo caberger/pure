@@ -7,40 +7,89 @@
  * https://www.aberger.at
  */
 
+const DEBUG = false
 /** A function that is called by a subject when something changed
  */
 type Callback<T> = (model: T) => void
 
+class Pipe<T extends object> implements Subscribable<T> {
+    callback: Callback<T> = t => { }
+    operators: Operator<T>[] = []
+    parent: Subject<T>
+
+    add(operators: ApplyFunction<T>[]) {
+        for (const cb of operators) {
+            const name = this.operators.length.toString()
+            const operator: Operator<T> = {
+                apply: cb,
+                name
+            }
+            operator.apply = operator.apply.bind(operator)
+            this.operators.push(operator)
+        }
+    }
+    addParent(parent: Subject<T>) {
+        this.parent = parent
+        const process = (t: T) => {
+            log("Pipe: value received from parent", t)
+            let result = t
+            for (const op of this.operators) {
+                if (result) {
+                    log("apply operator", op.name, "with", result, "lastValue", op.lastValue)
+                    result = op.apply(result)
+                    log("result operator", op.name, "=", result)
+                } else {
+                    log("skip, cause result is", result)
+                }
+            }
+            if (result) {
+                log("callback with", result)
+                this.callback(result)
+            } else {
+                log("no callback cause undefined")
+            }
+        }
+        parent.subscribe(process)
+    }
+    /** register a function that is called when our model changes */
+    subscribe(callback: Callback<T>) {
+        this.callback = callback
+        callback(this.parent.model)
+    }
+}
 /** a function that works on a result */
+//type Operator<T> = (t: T) => T
+type ApplyFunction<T> = (t: T) => T
+
 interface Operator<T> {
-    process: (t: T) => T
+    name?: string,
+    lastValue?: T,
+    apply: ApplyFunction<T>
 }
 
-interface Subscription<T> {
-    callback: Callback<T>
-    operators: Operator<T>[]
+interface Subscribable<T> {
+    subscribe: (callback: Callback<T>) => void
 }
-abstract class Observable<T> {
-    abstract subscribe(callback: Callback<T>) : void 
-}
+
 /** an Observable that can be subscribed by multiple observers
 */
-class Subject<T extends object> extends Observable<T> implements ProxyHandler<T> {
-    protected subscriptions: Subscription<T>[] = []
-    protected operators: Operator<T>[] = []
+class Subject<T extends object> implements ProxyHandler<T>, Subscribable<T> {
+    protected subscriptions: Callback<T>[] = []
     protected proxy: T
     model: T
-    lastValue?: T
 
     /**
-     * 
      * @param model the single source of truth model that is observed
      */
     constructor(model: T) {
-        super()
         this.model = model
         this.proxy = new Proxy(model, this)
     }
+    subscribe(callback: Callback<T>) {
+        this.subscriptions.push(callback)
+        callback(this.model)
+    }
+
     get(target: T, property: string | symbol, receiver: any): any {
         return Reflect.get(target, property, receiver)
     }
@@ -48,79 +97,70 @@ class Subject<T extends object> extends Observable<T> implements ProxyHandler<T>
         const wasSet = Reflect.set(target, property, newValue, receiver)
         if (wasSet) {
             this.emit(target)
-            this.lastValue = target
         }
         return wasSet
     }
-    protected emit(t: T) {
-        this.subscriptions.forEach(subscription => {
-            let result = t
-            for (const op of subscription.operators) {
-                if (result) {
-                    const fn = op.process.bind(this)
-                    result = fn(result)
-                }
-            }
-            if (result) {
-                subscription.callback(result)
-            }
-        })
-    }
-    /** register a function that is called when our model changes */
-    subscribe(callback: Callback<T>) {
-        const subscription: Subscription<T> = {
-            callback: callback,
-            operators: [...this.operators]
+    emit(t: T) {
+        for (const subscription of this.subscriptions) {
+            subscription(t)
         }
-        this.subscriptions.push(subscription)
-        this.emit(this.proxy)
     }
     get value() {
         return this.proxy
     }
     /** add operators that are processed before the callback function is called
     */
-    pipe(...operators: Operator<T>[]) {
-        operators.forEach(operator => this.operators.push(operator))
-        return this
+    pipe(...operators: ApplyFunction<T>[]) {
+        const pipe = new Pipe<T>()
+        pipe.add(operators)
+        pipe.addParent(this)
+        return pipe
     }
 }
 /** only do callbackes when the comparator does not say that it is the same.
 */
 function distinctUntilChanged<T extends object>(comparator: (prev: T, cur: T) => boolean) {
-    const op: Operator<T> = {
-        process: function (t: T): T {
-            let result = t
-            if (this.lastValue) {
-                const changed = comparator(this.lastValue!, t)
-                if (!changed) {
-                    result = undefined
-                }
+    function op(this: Operator<T>, t: T) {
+        log("in distinctUntilChanged with", t, "with lastvalue=", this.lastValue)
+        let result = t
+        if (this.lastValue) {
+            const isEqual = comparator(this.lastValue, t)
+            if (isEqual) {
+                result = undefined
+                log("no change, lastValue", this.lastValue, "current", t)
+            } else {
+                this.lastValue = structuredClone(result)
+                log("set lastValue", result)
             }
-            return result
+        } else {
+            log("distinctUntilChanged: no lastvalue, set lastValue to", result)
+            this.lastValue = structuredClone(result)
         }
+        log("exit distinctUntilChanged returns", result, "lastValue=", this.lastValue)
+        return result
     }
     return op
 }
 /** only forward when filter function returns true */
 function filter<T extends object>(filter: (t: T) => boolean) {
-    const op: Operator<T> = {
-        process: function (t: T): T {
-            let result = filter(t) ? t : undefined
-            return result
-        }
+    function op(t: T) {
+        let result = filter(t) ? t : undefined
+        return result
     }
     return op
 }
-/** only launch a side effect, e.g. console.log. */
+/** only launch a side effect, e.g. log. */
 function peek<T extends object>(sideEffekt: (t: T) => void) {
-    const op: Operator<T> = {
-        process: function (t: T): T {
-            const value = this.model
-            sideEffekt(value)
-            return t
-        }
+    function op(t: T) {
+        const value = this.model
+        sideEffekt(value)
+        return t
     }
     return op
+}
+function log(message?: any, ...optionalParams: any[]) {
+    if (DEBUG) {
+        console.log(message, optionalParams)
+    }
 }
 export { Subject, distinctUntilChanged, filter, peek }

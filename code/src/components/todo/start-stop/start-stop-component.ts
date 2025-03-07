@@ -1,32 +1,34 @@
 import { render } from "lib/pure-html"
-import { timer } from "lib/timer"
-import { set, store } from "features/model"
-import { produce } from "lib/immer"
+import { Timer, timer } from "lib/timer"
+import { DEFAULT_INTERVAL, set, store } from "features/model"
 
 import template from "./form-template.html"
+import { distinctUntilChanged } from "lib/observable"
 
 class StartStopComponent extends HTMLElement {
-    clock = timer(changeTheCompletedValueOfARandomToDo, timer.milliseconds(100), true)
+    clock: Timer
     connectedCallback() {
-        let previousActive: boolean
-        store.subscribe(model => {
-            const isActive = model.timerIsActive
-            if (previousActive != isActive) {
-                previousActive = isActive
-                if (isActive && !this.clock.active()) {
+        store
+            .pipe(distinctUntilChanged((prev, cur) => prev.timerInterval == cur.timerInterval && prev.timerIsActive == cur.timerIsActive))
+            .subscribe(model => {
+                this.clock?.stop()
+                this.clock = undefined
+                if (model.timerIsActive) {
+                    this.clock = timer(changeTheCompletedValueOfARandomToDo, timer.milliseconds(model.timerInterval), true)
                     this.clock.start()
+                } else {
+                    console.log("no timer")
                 }
-                if (!isActive && this.clock.active()) {
-                    this.clock.stop()
-                }
-                this.render(isActive)    
-            }
+                this.render(model.timerInterval, model.timerIsActive)    
         })
+        this.render(DEFAULT_INTERVAL, false)
     }
-    render(timerIsActive: boolean) {
+    render(interval: number, timerIsActive: boolean) {
         const startButtonDisabled = timerIsActive ? "disabled" : ""
         const stopButtonDisabled = timerIsActive ? "" : "disabled"
         render(template({startButtonDisabled, stopButtonDisabled}), this)
+        const intervalControl = this.querySelector("input")
+        intervalControl.value = interval.toString()
         const startButton = this.querySelector("button[id='start']") as HTMLButtonElement
         startButton.onclick = () => dialog.showModal()
         const stopButton = this.querySelector("button[id='stop']") as HTMLButtonElement
@@ -37,14 +39,20 @@ class StartStopComponent extends HTMLElement {
         }
         const form = dialog.querySelector("form")
         form.onformdata = (event: FormDataEvent) => {
-            const starts = event.formData.getAll("start")
+            const formData = event.formData
+            const starts = formData.getAll("start")
+            const interval = parseInt(formData.getAll("interval")[0] as string)
+            console.log("interval is", interval)
             if (starts.length > 0) {
-                set(model => model.timerIsActive = true)
+                set(model => {
+                    model.timerIsActive = true
+                    model.timerInterval = interval
+                })
             }
         }
     }
     disconnectedCallback() {
-        this.clock.stop()
+        this.clock?.stop()
     }
 }
 customElements.define("start-stop", StartStopComponent)
@@ -58,6 +66,10 @@ function changeTheCompletedValueOfARandomToDo() {
         const todos = model.todos
         const randomIndex = (Math.floor(todos.length * Math.random()) % 20) % todos.length
         const randomToDo = todos[randomIndex]
-        model.todos = produce(todos, todos => todos[randomIndex] = { ...todos[randomIndex], completed: !randomToDo.completed })
+        //model.todos = produce(todos, todos => todos[randomIndex] = { ...todos[randomIndex], completed: !randomToDo.completed })
+        const changedToDo = {...randomToDo, completed: !randomToDo.completed}
+        const changedToDos = [...todos]
+        changedToDos[randomIndex] = changedToDo
+        model.todos = [...changedToDos]
     })
 }

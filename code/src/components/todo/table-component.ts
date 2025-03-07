@@ -6,32 +6,32 @@ import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
 import { addOrRemoveElementClass, truncate } from "lib/util"
 import "./start-stop/start-stop-component"
-import { distinctUntilChanged, filter, peek } from "lib/observable"
+import { distinctUntilChanged } from "lib/observable"
 
 class ToDoTable extends HTMLElement {
     static observedAttributes = ["hidden"]
+    root: HTMLElement | ShadowRoot
+    
     constructor() {
         super()
-        this.attachShadow({ mode: "open" })
+        this.root = this.attachShadow({ mode: "closed" })
     }
     attributeChangedCallback(name: string) {
         name == "hidden" ? 
-            addOrRemoveElementClass("fadein", this.shadowRoot.querySelector("div"), this.getAttribute("hidden") === null) :
+            addOrRemoveElementClass("fadein", this.root.querySelector("div"), this.getAttribute("hidden") === null) :
             console.error("unknown attr", name)
     }
     connectedCallback() {
         this.renderTable()
         store
-            .pipe(
-                distinctUntilChanged((prev: Model, cur: Model) => prev.todos == cur.todos)
-            )
+            //.pipe(distinctUntilChanged((prev, cur) => prev.todos == cur.todos))
             .subscribe(model => this.renderBodyOfTableFor(model.todos))
     }
     get table() {
-        return this.shadowRoot.querySelector("table")
+        return this.root.querySelector("table")
     }
     renderTable() {
-        render(toDoTableWithHeader(), this.shadowRoot)
+        render(toDoTableWithHeader(), this.root)
         this.table.onclick = (e: PointerEvent) => {
             const target = e.target as HTMLElement
             const tr = target.closest("tr")
@@ -40,7 +40,8 @@ class ToDoTable extends HTMLElement {
         }
     }
     renderBodyOfTableFor(todos: ToDo[]) {
-        const bodyOfTable = this.shadowRoot.querySelector("tbody")
+        //console.log("render body")
+        const bodyOfTable = this.root.querySelector("tbody")
         const caption = this.table.querySelector("caption")
         const incompletedCount = todos.reduce((sum, todo) => todo.completed ? sum : sum + 1, 0)
         caption.innerText = `Number of open tasks: ${incompletedCount}`

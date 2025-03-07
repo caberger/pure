@@ -3,8 +3,12 @@
  * @author Christian Aberger
  * https://www.aberger.at
  */
-
-function timer(callback: () => void, ms: number, repeat: boolean = false) {
+interface Timer {
+    start: () => void
+    stop: () => void
+    active: () => boolean
+}
+function timer(callback: () => void, ms: number, repeat: boolean = false): Timer {
     let timer: NodeJS.Timeout
 
     function start() {
@@ -20,10 +24,6 @@ function timer(callback: () => void, ms: number, repeat: boolean = false) {
     function active() {
         return !!timer
     }
-    function milliSeconds(ms: number) {
-        return ms
-    }
-    const seconds = (seconds: number) => 1000 * seconds
     return { start, stop, active }
 }
 function milliSeconds(ms: number) {
@@ -52,4 +52,4 @@ function throttle(callback: Callback, delay = 1000) {
         }
     }
 }
-export { timer, debounce, throttle }
+export { Timer, timer, debounce, throttle }

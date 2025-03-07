@@ -1,25 +1,30 @@
 import { set } from "features/model"
 
+const START_PANE = "/todos"
+
 interface NavigationState {
     pane: string
 }
 
-setup()
+handleInitialPageLoad()
 
-function setup() {
+function handleInitialPageLoad() {
     window.addEventListener("popstate", (event: PopStateEvent) => {
         const state = event.state as NavigationState
-        console.log("pop state", state)
+        console.log("pop state")
         set(model => model.currentPane = state.pane)
     })
     const state = createNavigationStateWith(document.location.href)
     console.log("replace state", state)
-    history.replaceState(state, "", document.location.href)
+    history.replaceState(state, "")
+    set(model => model.currentPane = state.pane)
 }
-
 function createNavigationStateWith(location: string) {
     const url = new URL(location)
-    const pane = url.pathname
+    let pane = url.pathname
+    if (pane == "/") {
+        pane = START_PANE
+    }
     const state: NavigationState = {
         pane
     }
@@ -33,8 +38,8 @@ function addLinks(element: HTMLElement | ShadowRoot) {
         a.onclick = (e: MouseEvent) => {
             e.preventDefault()
             const state = createNavigationStateWith(a.href)
-            history.pushState(state, "", a.href)
-            console.log("push state", state)
+            console.log("push state=", state,)
+            history.pushState(state, "", state.pane)
             set(model => model.currentPane = state.pane)
         }
     })

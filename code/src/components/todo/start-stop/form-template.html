@@ -15,7 +15,7 @@
 <div class="container">
     <div class="pure-form">
         <fieldset>
-            <legend>Start / Stop a timer to change the "completed" state of a random todo (10 times a second)</legend>
+            <legend>Start / Stop a timer to change the "completed" state of a random todo</legend>
             <span></span>
             <button id="start" class="pure-button pure-button-primary" ${model.startButtonDisabled}>
                 Start...
@@ -27,14 +27,21 @@
         </fieldset>
     </div>
     <dialog aria-labelledby="msg-title">
-        <h2 id="msg-title">Are you sure?</h2>
-        <p>
-            A timer will be started that changes the completion state of random elements
-        </p>
+        <h2 id="msg-title">Start A Timer</h2>
+        <p>a timer will be started to change the completion state of a random todo.</p>
         <form method="dialog" class="pure-form">
+            <fieldset>
+                <legend>Interval for timer</legend>
+                <input type="number" min="100" max="10000" name="interval"/>
+                &nbsp;
+                <select name="unit" required>
+                    <option value="">-- Unit --</option>
+                    <option value="ms">ms (Milliseconds) </option>
+                </select>
+            </fieldset>
             <footer>
                 <button type="submit" name="start" class="pure-button pure-button-primary">
-                    Yes
+                    Start
                 </button>
                 <button type="submit" name="cancel" class="pure-button pure-button">
                     Cancel

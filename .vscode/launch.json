@@ -1,0 +1,27 @@
+{
+    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "observable",
+            "runtimeExecutable": "tsx",
+            "cwd": "${workspaceFolder}/code",
+            "args": ["--inspect"],
+            "skipFiles": [
+                "<node_internals>/**",
+                "node_modules/**",
+            ],
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "program": "./src/test/test.ts",
+            "outFiles": [
+                "**/*.js"
+            ]
+        }
+    ]
+}
