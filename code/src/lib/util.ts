@@ -1,3 +1,11 @@
+/** Helper functions.
+ * Do not use in production.
+ * For educational purposes only.
+ * @author Christian Aberger
+ * (c) Christian Aberger (2025)
+ * https://www.aberger.at
+ */
+
 function clear(element: HTMLElement | ShadowRoot | undefined) {
     while(element?.firstChild) {
         element.firstChild.remove()

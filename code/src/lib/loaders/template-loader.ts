@@ -1,5 +1,7 @@
 /** a webpack loader to load html-templates.
-  * (c) Christian Aberger (2025)
+ * Do not use in production.
+ * For educational purposes only.
+ * (c) Christian Aberger (2025)
  * @author Christian Aberger
  * https://www.aberger.at
  */

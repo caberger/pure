@@ -1,3 +1,12 @@
+/** small router.
+ * Do not use in production.
+ * For educational purposes only.
+ * @see https://reactivex.io/
+ * @author Christian Aberger
+ * (c) Christian Aberger (2025)
+ * https://www.aberger.at
+ */
+
 import { set } from "features/model"
 
 const START_PANE = "/todos"

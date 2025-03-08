@@ -34,14 +34,14 @@ describe("subject", () => {
         store
             .pipe(distinctUntilChanged((previous, current) => previous.greeting == current.greeting))
             .subscribe(model => {
-                console.log("greeting changes from", greeting, "to", model.greeting)
+                console.log(`greeting changes from '${greeting}' to`, model.greeting)
                 greeting = model.greeting
                 numberOfCallbacksReceived++
             })
         set(model => model.greeting = HELLO)
-        //set(model => model.greeting = HELLO)
+        set(model => model.greeting = HELLO)
         assert.equal(greeting, HELLO, "the greeting should be the same es submitted")
-        assert.equal(numberOfCallbacksReceived, 1, "should not repeat unchanged")
+        assert.equal(numberOfCallbacksReceived, 2, "should not repeat unchanged")
     })
 })
 

@@ -50,6 +50,13 @@ class StartStopComponent extends HTMLElement {
                 })
             }
         }
+        function close(e: Event) {
+            e.preventDefault()
+            dialog.close()
+        }
+        const cancelButton = dialog.querySelector("button[name='cancel']") as HTMLButtonElement
+        cancelButton.onclick = close
+        dialog.addEventListener("close", close)
     }
     disconnectedCallback() {
         this.clock?.stop()

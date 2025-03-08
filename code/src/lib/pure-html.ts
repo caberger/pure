@@ -1,6 +1,8 @@
 import { clear } from "./util"
 
 /** small replacement for lit-html
+ * Do not use in production.
+ * For educational purposes only.
  * @see https://github.com/lit/lit/tree/main/packages/lit-html
  * (c) Christian Aberger (2025)
  * @author Christian Aberger

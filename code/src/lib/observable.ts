@@ -58,7 +58,6 @@ class Pipe<T extends object> implements Subscribable<T> {
     }
 }
 /** a function that works on a result */
-//type Operator<T> = (t: T) => T
 type ApplyFunction<T> = (t: T) => T
 
 interface Operator<T> {
