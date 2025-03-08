@@ -54,9 +54,15 @@ class StartStopComponent extends HTMLElement {
             e.preventDefault()
             dialog.close()
         }
+        function keyDown(e: KeyboardEvent) {
+            if (e.key.toLowerCase() == "Enter".toLowerCase()) {
+                close(e)
+            }
+        }
         const cancelButton = dialog.querySelector("button[name='cancel']") as HTMLButtonElement
         cancelButton.onclick = close
-        dialog.addEventListener("close", close)
+        dialog.onclose = close
+        dialog.onkeydown = keyDown
     }
     disconnectedCallback() {
         this.clock?.stop()
