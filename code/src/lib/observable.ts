@@ -7,17 +7,32 @@
  * https://www.aberger.at
  */
 
-const DEBUG = false
-/** A function that is called by a subject when something changed
- */
+
+/** A function that is called by a subject when something changed */
 type Callback<T> = (model: T) => void
+
+/** a function that works on a result */
+type PipeFunction<T> = (t: T) => T
+
+/** an element of a pipe */
+interface Operator<T> {
+    name?: string,
+    lastValue?: T,
+    apply: PipeFunction<T>
+}
+
+/** something that can be subscribed to */
+interface Subscribable<T> {
+    subscribe: (callback: Callback<T>) => void
+    aSubscriptionWasDoneBy: (callback: Callback<T>) => void
+}
 
 class Pipe<T extends object> implements Subscribable<T> {
     callback: Callback<T> = t => { }
     operators: Operator<T>[] = []
-    parent: Subject<T>
+    parent: Subscribable<T>
 
-    add(operators: ApplyFunction<T>[]) {
+    add(operators: PipeFunction<T>[]) {
         for (const cb of operators) {
             const name = this.operators.length.toString()
             const operator: Operator<T> = {
@@ -28,7 +43,7 @@ class Pipe<T extends object> implements Subscribable<T> {
             this.operators.push(operator)
         }
     }
-    addParent(parent: Subject<T>) {
+    addParent(parent: Subscribable<T>) {
         this.parent = parent
         const process = (t: T) => {
             log("Pipe: value received from parent", t)
@@ -54,21 +69,13 @@ class Pipe<T extends object> implements Subscribable<T> {
     /** register a function that is called when our model changes */
     subscribe(callback: Callback<T>) {
         this.callback = callback
-        callback(this.parent.model)
+        this.parent.aSubscriptionWasDoneBy(callback)
+    }
+    aSubscriptionWasDoneBy(callback: Callback<T>) {
+        this.parent.aSubscriptionWasDoneBy(callback)
     }
 }
-/** a function that works on a result */
-type ApplyFunction<T> = (t: T) => T
 
-interface Operator<T> {
-    name?: string,
-    lastValue?: T,
-    apply: ApplyFunction<T>
-}
-
-interface Subscribable<T> {
-    subscribe: (callback: Callback<T>) => void
-}
 
 /** an Observable that can be subscribed by multiple observers
 */
@@ -86,9 +93,11 @@ class Subject<T extends object> implements ProxyHandler<T>, Subscribable<T> {
     }
     subscribe(callback: Callback<T>) {
         this.subscriptions.push(callback)
+        this.aSubscriptionWasDoneBy(callback)
+    }
+    aSubscriptionWasDoneBy (callback: Callback<T>) {
         callback(this.model)
     }
-
     get(target: T, property: string | symbol, receiver: any): any {
         return Reflect.get(target, property, receiver)
     }
@@ -109,7 +118,7 @@ class Subject<T extends object> implements ProxyHandler<T>, Subscribable<T> {
     }
     /** add operators that are processed before the callback function is called
     */
-    pipe(...operators: ApplyFunction<T>[]) {
+    pipe(...operators: PipeFunction<T>[]) {
         const pipe = new Pipe<T>()
         pipe.add(operators)
         pipe.addParent(this)
@@ -157,6 +166,8 @@ function peek<T extends object>(sideEffekt: (t: T) => void) {
     }
     return op
 }
+
+const DEBUG = true
 function log(message?: any, ...optionalParams: any[]) {
     if (DEBUG) {
         console.log(message, optionalParams)
