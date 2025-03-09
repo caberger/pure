@@ -30,10 +30,10 @@ class StartStopComponent extends HTMLElement {
         const intervalControl = this.querySelector("input")
         intervalControl.value = interval.toString()
         const startButton = this.querySelector("button[id='start']") as HTMLButtonElement
-        startButton.onclick = () => dialog.showModal()
         const stopButton = this.querySelector("button[id='stop']") as HTMLButtonElement
 
         const dialog = this.querySelector("dialog")
+        startButton.onclick = () => dialog.showModal()
         stopButton.onclick = () => {
             set(model => model.timerIsActive = false)
         }

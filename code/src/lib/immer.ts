@@ -5,9 +5,12 @@
  * https://www.aberger.at
  */
 
-function produce<T>(baseState: T, recipe: (draft: T) => void) {
+
+type WriteableDraft<T> = { -readonly [P in keyof T]: WriteableDraft<T[P]> }
+
+function produce<T>(baseState: T, recipe: (draft: WriteableDraft<T>) => void) {
     const clone = structuredClone(baseState)
     recipe(clone)
     return clone
 }
-export { produce }
+export { produce, WriteableDraft }

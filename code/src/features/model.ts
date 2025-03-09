@@ -1,12 +1,14 @@
 import { ToDo } from "./todo"
-import { Subject } from "lib/observable"
+import { apply, Subject } from "lib/observable"
+import { WriteableDraft } from "../lib/immer"
 
 const DEFAULT_INTERVAL = 100
+
 interface Model {
-    todos: ToDo[]
-    currentPane: string
-    timerInterval: number
-    timerIsActive: boolean
+    readonly todos: ToDo[]
+    readonly currentPane: string
+    readonly timerInterval: number
+    readonly timerIsActive: boolean
 }
 const state: Model = {
     todos: [],
@@ -14,9 +16,10 @@ const state: Model = {
     timerInterval: DEFAULT_INTERVAL,
     timerIsActive: false,
 }
+
 const store = new Subject(state)
 
-function set(recipe: (model: Model) => void) {
-    recipe(store.value)
+function set(recipe: (model: WriteableDraft<Model>) => void) {
+    apply(store, recipe)
 }
 export { Model, store, set, DEFAULT_INTERVAL }

@@ -166,11 +166,13 @@ function peek<T extends object>(sideEffekt: (t: T) => void) {
     }
     return op
 }
-
+function apply<T extends object>(subject: Subject<T>, recipe: (store: T) => void) {
+    recipe(subject.value)
+}
 const DEBUG = true
 function log(message?: any, ...optionalParams: any[]) {
     if (DEBUG) {
         console.log(message, optionalParams)
     }
 }
-export { Subject, distinctUntilChanged, filter, peek }
+export { Subject, distinctUntilChanged, filter, peek, apply }
