@@ -8,7 +8,7 @@
     "prestart": "npm run build:loaders",
     "build": "webpack --mode=production --node-env=production",
     "build:dev": "webpack --mode=development",
-    "build:loaders": "npx tsc --declaration ./src/lib/loaders/template-loader.ts && node ./data/create-test-data.mjs",
+    "build:loaders": "npx tsc --declaration ./src/lib/loaders/template-loader.ts && npx tsc --declaration ./src/lib/loaders/style-loader.ts && node ./data/create-test-data.mjs",
     "watch": "webpack --watch",
     "start": "webpack serve"
   },

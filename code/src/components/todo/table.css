@@ -1,0 +1,23 @@
+div {
+  width: 100%;
+}
+table {
+  width: 100%;
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+tbody tr {
+  cursor: pointer;
+}
+#table {
+  opacity: 0;
+}
+#table.fadein {
+  opacity: 1;
+  transition: opacity 1.5s;
+  transition-timing-function: ease-in;
+}
+.right {
+  text-align: right;
+}

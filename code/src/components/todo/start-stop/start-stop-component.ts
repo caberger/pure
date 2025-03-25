@@ -19,14 +19,14 @@ class StartStopComponent extends HTMLElement {
                 } else {
                     console.log("no timer")
                 }
-                this.render(model.timerInterval, model.timerIsActive)    
-        })
+                this.render(model.timerInterval, model.timerIsActive)
+            })
         this.render(DEFAULT_INTERVAL, false)
     }
     render(interval: number, timerIsActive: boolean) {
         const startButtonDisabled = timerIsActive ? "disabled" : ""
         const stopButtonDisabled = timerIsActive ? "" : "disabled"
-        render(template({startButtonDisabled, stopButtonDisabled}), this)
+        render(template({ startButtonDisabled, stopButtonDisabled }), this)
         const intervalControl = this.querySelector("input")
         intervalControl.value = interval.toString()
         const startButton = this.querySelector("button[id='start']") as HTMLButtonElement
@@ -80,7 +80,7 @@ function changeTheCompletedValueOfARandomToDo() {
         const randomIndex = (Math.floor(todos.length * Math.random()) % 20) % todos.length
         const randomToDo = todos[randomIndex]
         //model.todos = produce(todos, todos => todos[randomIndex] = { ...todos[randomIndex], completed: !randomToDo.completed })
-        const changedToDo = {...randomToDo, completed: !randomToDo.completed}
+        const changedToDo = { ...randomToDo, completed: !randomToDo.completed }
         const changedToDos = [...todos]
         changedToDos[randomIndex] = changedToDo
         model.todos = [...changedToDos]

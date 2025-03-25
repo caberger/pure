@@ -1,27 +1,30 @@
 import { store, Model } from "features/model"
 
-import toDoTableWithHeader from "./table-template.html"
-
 import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
 import { addOrRemoveElementClass, truncate } from "lib/util"
 import "./start-stop/start-stop-component"
-import { distinctUntilChanged } from "lib/observable"
+
+import toDoTableWithHeader from "./table-template.html"
+import css from "./table.css"
 
 class ToDoTable extends HTMLElement {
     static observedAttributes = ["hidden"]
-    root: HTMLElement | ShadowRoot
-    
+    root: ShadowRoot
+
     constructor() {
         super()
         this.root = this.attachShadow({ mode: "closed" })
     }
     attributeChangedCallback(name: string) {
-        name == "hidden" ? 
+        name == "hidden" ?
             addOrRemoveElementClass("fadein", this.root.querySelector("div"), this.getAttribute("hidden") === null) :
             console.error("unknown attr", name)
     }
     connectedCallback() {
+        const styleSheet = css()
+        console.log("css is", styleSheet)
+        this.root.adoptedStyleSheets.push(styleSheet)
         this.renderTable()
         store
             //.pipe(distinctUntilChanged((prev, cur) => prev.todos == cur.todos))
@@ -56,7 +59,7 @@ class ToDoTable extends HTMLElement {
             cols[1].innerHTML = truncate(todo.title, 80)
             cols[2].innerText = todo.completed.toString()
             bodyOfTable.appendChild(row)
-      })
+        })
     }
     aTableRowHasBeenClickedFor(id: number) {
         this.dispatchEvent(new CustomEvent("todo-selected", { detail: id })) // please explain: why do we not reveive this ?

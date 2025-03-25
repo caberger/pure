@@ -1,2 +1,2 @@
-template-loader.d.ts
+*.d.ts
 *.js

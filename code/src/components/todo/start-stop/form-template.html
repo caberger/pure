@@ -1,52 +1,65 @@
 <style>
-    fieldset {
-        display: flex
-    }
+  fieldset {
+    display: flex;
+  }
 
-    span {
-        flex-grow: 1;
-    }
+  span {
+    flex-grow: 1;
+  }
 
-    button {
-        margin: 0.5rem;
-    }
+  button {
+    margin: 0.5rem;
+  }
 </style>
-
 <div class="container">
-    <div class="pure-form">
-        <fieldset>
-            <legend>Start / Stop a timer to change the "completed" state of a random todo</legend>
-            <span></span>
-            <button id="start" class="pure-button pure-button-primary" ${model.startButtonDisabled}>
-                Start...
-            </button>
-            <button id="stop" class="pure-button pure-button" ${model.stopButtonDisabled}>
-                Stop
-            </button>
-            <span></span>
-        </fieldset>
-    </div>
-    <dialog aria-labelledby="msg-title">
-        <h2 id="msg-title">Start A Timer</h2>
-        <p>a timer will be started to change the completion state of a random todo.</p>
-        <form method="dialog" class="pure-form">
-            <fieldset>
-                <legend>Interval for timer</legend>
-                <input type="number" min="100" max="10000" name="interval"/>
-                &nbsp;
-                <select name="unit" required>
-                    <option value="">-- Unit --</option>
-                    <option value="ms">ms (Milliseconds) </option>
-                </select>
-            </fieldset>
-            <footer>
-                <button type="submit" name="start" class="pure-button pure-button-primary">
-                    Start
-                </button>
-                <button name="cancel" class="pure-button pure-button">
-                    Cancel
-                </button>
-            </footer>
-        </form>
-    </dialog>
+  <div class="pure-form">
+    <fieldset>
+      <legend>
+        Start / Stop a timer to change the "completed" state of a random todo
+      </legend>
+      <span></span>
+      <button
+        id="start"
+        class="pure-button pure-button-primary"
+        ${model.startButtonDisabled}
+      >
+        Start...
+      </button>
+      <button
+        id="stop"
+        class="pure-button pure-button"
+        ${model.stopButtonDisabled}
+      >
+        Stop
+      </button>
+      <span></span>
+    </fieldset>
+  </div>
+  <dialog aria-labelledby="msg-title">
+    <h2 id="msg-title">Start A Timer</h2>
+    <p>
+      a timer will be started to change the completion state of a random todo.
+    </p>
+    <form method="dialog" class="pure-form">
+      <fieldset>
+        <legend>Interval for timer</legend>
+        <input type="number" min="100" max="10000" name="interval" />
+        &nbsp;
+        <select name="unit" required>
+          <option value="">-- Unit --</option>
+          <option value="ms">ms (Milliseconds)</option>
+        </select>
+      </fieldset>
+      <footer>
+        <button
+          type="submit"
+          name="start"
+          class="pure-button pure-button-primary"
+        >
+          Start
+        </button>
+        <button name="cancel" class="pure-button pure-button">Cancel</button>
+      </footer>
+    </form>
+  </dialog>
 </div>

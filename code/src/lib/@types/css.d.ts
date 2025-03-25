@@ -6,7 +6,7 @@
  * https://www.aberger.at
  */
 
-declare module "*-template.html" {
-    const value: (content?: any) => HTMLTemplateElement
+declare module "*.css" {
+    const value: () => CSSStyleSheet
     export default value
 }
