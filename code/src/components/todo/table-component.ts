@@ -22,9 +22,7 @@ class ToDoTable extends HTMLElement {
             console.error("unknown attr", name)
     }
     connectedCallback() {
-        const styleSheet = css()
-        console.log("css is", styleSheet)
-        this.root.adoptedStyleSheets.push(styleSheet)
+        this.root.adoptedStyleSheets.push(css())
         this.renderTable()
         store
             //.pipe(distinctUntilChanged((prev, cur) => prev.todos == cur.todos))

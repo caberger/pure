@@ -32,11 +32,12 @@ npm run build
 
 ## Dependencies
 
-When you check the [package.json](./package.json) file you see that it contains the following line:
+When you check the [package.json](./package.json) file you see that it contains either not dependencies entry at all or the following line:
 ```json
   "dependencies": {},
 ```
-Then consider which security risks can be cause by the external packages used ;)
+Then consider which security risks can be caused
+by the external packages used ;)
 
 ---
 [^1]: Which has nothing to do with the react framework
