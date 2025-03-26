@@ -7,7 +7,6 @@
  * https://www.aberger.at
  */
 
-
 /** A function that is called by a subject when something changed */
 type Callback<T> = (model: T) => void
 
@@ -95,7 +94,7 @@ class Subject<T extends object> implements ProxyHandler<T>, Subscribable<T> {
         this.subscriptions.push(callback)
         this.aSubscriptionWasDoneBy(callback)
     }
-    aSubscriptionWasDoneBy (callback: Callback<T>) {
+    aSubscriptionWasDoneBy(callback: Callback<T>) {
         callback(this.model)
     }
     get(target: T, property: string | symbol, receiver: any): any {
@@ -169,7 +168,7 @@ function peek<T extends object>(sideEffekt: (t: T) => void) {
 function apply<T extends object>(subject: Subject<T>, recipe: (store: T) => void) {
     recipe(subject.value)
 }
-const DEBUG = true
+const DEBUG = false
 function log(message?: any, ...optionalParams: any[]) {
     if (DEBUG) {
         console.log(message, optionalParams)

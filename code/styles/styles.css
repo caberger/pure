@@ -1,7 +1,10 @@
 /** add global styles here */
 dialog {
-    padding: 1.5rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 0.75rem;
-    max-width: min(calc(100vw - 6rem), 48rem);
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  max-width: min(calc(100vw - 6rem), 48rem);
+}
+* {
+  font-family: system-ui;
 }

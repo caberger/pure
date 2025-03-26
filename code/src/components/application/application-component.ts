@@ -30,17 +30,15 @@ class ApplicationElement extends HTMLElement {
             .addEventListener("todo-selected", (e: CustomEvent<number>) => this.toDoSelected(e))
     }
     show(pane: string) {
-        console.log("application: show", pane)
         const tab = pane == "/" ? "/todos" : pane
         const panes = ["todo-table", "user-table"]
         panes.forEach(el => {
             const element = this.querySelector(el) as HTMLElement
-            console.log("found element", element)
             if (element.dataset.pane == tab) {
                 element.removeAttribute("hidden")
             } else {
                 element.setAttribute("hidden", "")
-            }    
+            }
         })
     }
     toDoSelected(event: CustomEvent<number>): void {
@@ -49,4 +47,3 @@ class ApplicationElement extends HTMLElement {
     }
 }
 customElements.define("application-component", ApplicationElement)
-

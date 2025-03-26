@@ -1,9 +1,10 @@
-import { store, Model } from "features/model"
+import { store } from "features/model"
 
 import { ToDo } from "features/todo"
 import { html, render } from "lib/pure-html"
 import { addOrRemoveElementClass, truncate } from "lib/util"
 import "./start-stop/start-stop-component"
+import { addDocumentStyles } from "lib/css"
 
 import toDoTableWithHeader from "./table-template.html"
 import css from "./table.css"
@@ -22,8 +23,8 @@ class ToDoTable extends HTMLElement {
             console.error("unknown attr", name)
     }
     connectedCallback() {
-        this.root.adoptedStyleSheets.push(css())
         this.renderTable()
+        addDocumentStyles(this.root, [css()])
         store
             //.pipe(distinctUntilChanged((prev, cur) => prev.todos == cur.todos))
             .subscribe(model => this.renderBodyOfTableFor(model.todos))
@@ -36,8 +37,10 @@ class ToDoTable extends HTMLElement {
         this.table.onclick = (e: PointerEvent) => {
             const target = e.target as HTMLElement
             const tr = target.closest("tr")
-            const id = parseInt(tr.getAttribute("id"))
-            this.aTableRowHasBeenClickedFor(id)
+            if (tr) {
+                const id = parseInt(tr.getAttribute("id"))
+                this.aTableRowHasBeenClickedFor(id)
+            }
         }
     }
     renderBodyOfTableFor(todos: ToDo[]) {
