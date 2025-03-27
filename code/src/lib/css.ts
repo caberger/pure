@@ -15,7 +15,8 @@ import { deprecate } from "node:util"
 */
 function addDocumentStyles(shadowRoot: ShadowRoot, styles?: CSSStyleSheet[]) {
     document.head.querySelectorAll<HTMLLinkElement>("link[rel='stylesheet']").forEach(link => {
-        shadowRoot.appendChild(link)
+        const clone = link.cloneNode()
+        shadowRoot.appendChild(clone)
     })
     if (styles) {
         shadowRoot.adoptedStyleSheets.push(...styles)
