@@ -26,8 +26,5 @@ class Recorder {
     stop() {
         this.mediaRecorder.stop()
     }
-    get isPlaying() {
-        return !!("inactive" == this.mediaRecorder?.state)
-    }
 }
 export { Recorder }
