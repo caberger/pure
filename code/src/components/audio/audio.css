@@ -8,3 +8,19 @@ button {
 svg {
   margin: auto;
 }
+.blink {
+  animation: blink-animation 1s steps(5, start) infinite;
+  -webkit-animation: blink-animation 1s steps(5, start) infinite;
+  border-radius: 4px;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+    background-color: red;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
