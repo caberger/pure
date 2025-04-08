@@ -1,0 +1,10 @@
+div {
+  display: flex;
+  justify-content: center;
+}
+button {
+  margin: 0.5rem;
+}
+svg {
+  margin: auto;
+}

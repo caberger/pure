@@ -20,8 +20,10 @@ handleInitialPageLoad()
 function handleInitialPageLoad() {
     window.addEventListener("popstate", (event: PopStateEvent) => {
         const state = event.state as NavigationState
-        console.log("pop state")
-        set(model => model.currentPane = state.pane)
+        console.log("pop state", state)
+        if (state) {
+            set(model => model.currentPane = state.pane)
+        }
     })
     const state = createNavigationStateWith(document.location.href)
     console.log("replace state", state)
@@ -55,4 +57,3 @@ function addLinks(element: HTMLElement | ShadowRoot) {
 }
 
 export { addLinks }
-
