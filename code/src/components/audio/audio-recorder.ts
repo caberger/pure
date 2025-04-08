@@ -8,6 +8,9 @@ type Action = "record" | "stop" | "close"
 type Operator = (this: AudioRecorderDialog, event: Event) => void
 
 const actions = new Map<Action, Operator>
+actions.set("record", startRecording)
+actions.set("close", close)
+actions.set("stop", stopRecording)
 
 class AudioRecorderDialog extends HTMLElement {
     static is = "audio-recorder"
@@ -17,9 +20,6 @@ class AudioRecorderDialog extends HTMLElement {
     constructor() {
         super()
         this.root = this.attachShadow({ mode: "open" })
-        actions.set("record", startRecording)
-        actions.set("close", close)
-        actions.set("stop", stopRecording)
     }
     connectedCallback() {
         console.log("AudioRecorder connected")
@@ -31,9 +31,7 @@ class AudioRecorderDialog extends HTMLElement {
             const value = submitter.value as Action
             actions.get(value).bind(this)(e)
         }
-        this.link.onclick = () => {
-            this.dialog.showModal()
-        }
+        this.link.onclick = () => this.dialog.showModal()
     }
     get form() {
         return this.root.querySelector("form")!
@@ -50,11 +48,11 @@ class AudioRecorderDialog extends HTMLElement {
     get micOff() {
         return this.root.getElementById("mic-off")
     }
-    button(value: Action) {
-        return this.root.querySelector(`button[value="${value}"]`) as HTMLButtonElement
-    }
     get audio() {
         return this.root.querySelector("audio")!
+    }
+    button(value: Action) {
+        return this.root.querySelector(`button[value="${value}"]`) as HTMLButtonElement
     }
     updateControls(playing: boolean) {
         this.micOn.hidden = !playing
