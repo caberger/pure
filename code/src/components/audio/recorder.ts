@@ -8,7 +8,6 @@ class Recorder {
         const mediaRecorder = this.mediaRecorder = new MediaRecorder(this.stream)
         this.mediaRecorder = mediaRecorder
         mediaRecorder.onstart = () => this.chunks = []
-        //mediaRecorder.onstop = e => this.recordingDone(e)
         mediaRecorder.ondataavailable = e => this.chunks.push(e.data)
     }
     async disconnect() {
@@ -20,7 +19,6 @@ class Recorder {
             this.stream?.getTracks().forEach(track => track.stop())
             delete this.stream
         }
-
     }
     start() {
         this.mediaRecorder.start()
